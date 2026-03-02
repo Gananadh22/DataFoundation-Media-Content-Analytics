@@ -1,0 +1,1 @@
+CREATE SCHEMA IF NOT EXISTS `media-content-analytics-488013.media_content_dw`;
