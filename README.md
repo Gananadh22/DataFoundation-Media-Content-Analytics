@@ -1,39 +1,43 @@
 DataFoundation – Media Content Analytics Platform
 Project Overview
 
-DataFoundation is an end-to-end media content analytics platform designed to analyze and visualize YouTube content performance and News category trends.
+DataFoundation is an end-to-end media content analytics platform designed to analyze and visualize YouTube content performance alongside news category trends. The project demonstrates a complete data lifecycle, encompassing data ingestion, transformation, storage, modeling, and visualization.
 
-The project demonstrates the complete data lifecycle — from data ingestion and transformation to data warehousing and interactive visualization. Multiple data sources are integrated, processed using Python, stored in a BigQuery analytical warehouse, and exposed through Streamlit dashboards for insight generation.
+Multiple heterogeneous data sources—including REST APIs and static datasets—are integrated, processed using Python, stored in a cloud-based analytical warehouse (BigQuery), and presented through interactive dashboards built with Streamlit. The platform enables data-driven insights into audience engagement and content trends.
 
 Objectives
 
-Analyze media content performance and audience engagement
+The primary objectives of this project are to:
 
-Process heterogeneous data sources (REST API and static datasets)
+Analyze media content performance and audience engagement patterns
 
-Apply data cleaning, transformation, and modeling techniques
+Integrate and process heterogeneous data sources (API and file-based)
 
-Design analytical schemas in BigQuery
+Apply robust data cleaning and transformation techniques
 
-Build interactive dashboards for business insights
+Design scalable analytical schemas in a cloud data warehouse
+
+Develop interactive dashboards for business intelligence and decision-making
 
 Technology Stack
 
-Python – Data ingestion, cleaning, transformation
+The platform is built using a modern data analytics stack:
 
-Pandas – Data processing
+Python – Data ingestion, processing, and transformation
 
-Google BigQuery – Data warehouse
+Pandas – Data manipulation and cleaning
 
-SQL – Schema definition and analytical queries
+Google BigQuery – Cloud-based analytical data warehouse
 
-Streamlit – Dashboard and visualization
+SQL – Schema design and analytical querying
 
-Plotly – Interactive charts
+Streamlit – Interactive dashboard development
 
-REST API – YouTube Data API
+Plotly – Data visualization and charting
 
-CSV / JSON – Data formats
+REST APIs – YouTube Data API integration
+
+Data Formats – CSV and JSON
 
 Project Structure
 media_content_analytics/
@@ -59,79 +63,82 @@ media_content_analytics/
 │   └── youtube_fetch.py
 ├── requirements.txt
 └── README.md
-End-to-End Data Flow
-1. Data Sources
+End-to-End Data Pipeline
+Data Sources
+
+The platform integrates two primary data sources:
 
 YouTube Data API
+Provides video-level metrics such as views, likes, and comments
 
-Video metrics: views, likes, comments
+News Category Dataset (Kaggle)
+Contains article metadata including category, title, and publication date
 
-Kaggle News Category Dataset
+Data Ingestion
 
-Article metadata and category labels
+Data ingestion is handled through Python scripts located in the scripts/ directory:
 
-2. Data Ingestion
+youtube_fetch.py retrieves YouTube metrics via REST API calls
 
-Scripts located in scripts/:
+load_news_data.py loads raw news dataset files
 
-youtube_fetch.py
-Fetches YouTube metrics using REST APIs
+All data is ingested in its original form to preserve source integrity.
 
-load_news_data.py
-Loads raw news dataset
+Raw Data Storage
 
-Raw data is ingested without modification.
+Raw datasets are stored in:
 
-3. Raw Data Storage
+data/raw/
 
-Directory: data/raw/
+This layer ensures:
 
-Stores original datasets
+Preservation of original data
 
-Preserves source integrity
+Reproducibility of transformations
 
-Enables reprocessing when required
+Flexibility for reprocessing
 
-4. Data Cleaning and Transformation
+Data Cleaning and Transformation
 
-Performed using Python and Pandas:
+Data preprocessing is performed using Python and Pandas, including:
 
-Handle missing values
+Handling missing and inconsistent values
 
-Normalize column names
+Standardizing column naming conventions
 
-Parse and standardize dates
+Parsing and normalizing date formats
 
-Calculate derived metrics (e.g., engagement rate)
+Deriving calculated metrics such as engagement rate
 
-5. Processed Data Storage
+Processed Data Layer
 
-Directory: data/processed/
+Cleaned and transformed datasets are stored in:
+
+data/processed/
+
+Files include:
 
 news_clean.csv
 
 youtube_metrics.csv
 
-These files represent analytics-ready datasets.
+These datasets are optimized for analytical consumption.
 
 Data Warehouse (BigQuery)
 Dataset
 
 Dataset Name: media_content_dw
 
-Serves as the analytical warehouse layer
+Serves as the centralized analytical storage layer
 
 Schema Design
 
-The project follows domain-driven modeling rather than forcing unrelated datasets into a single star schema.
+The project adopts a domain-driven modeling approach, ensuring logical separation between distinct data domains rather than enforcing a single unified schema.
 
 Tables
-
 fact_youtube_metrics
 
-Stores measurable YouTube performance data
-
-Metrics:
+Stores quantitative performance metrics for YouTube content:
 
 view_count
 
@@ -143,80 +150,66 @@ engagement_rate
 
 dim_news_content
 
-Stores descriptive news content data
+Stores descriptive attributes for news content:
 
-Attributes:
+article_title
 
-Article title
+category
 
-Category
+publication_date
 
-Publication date
+Design Consideration
 
-Note:
-YouTube and News datasets are modeled separately because they represent different business domains. This reflects real-world analytical design practices.
+The YouTube and News datasets are modeled independently to reflect real-world analytical practices, where unrelated domains are not forced into a single schema. This improves scalability, maintainability, and clarity.
 
-SQL Files
+SQL Definitions
 
-Located in bigquery/:
+SQL scripts are located in the bigquery/ directory:
 
-dataset.sql – Creates BigQuery dataset
+dataset.sql – Dataset creation
 
-fact_youtube_metrics.sql – Creates YouTube fact table
+fact_youtube_metrics.sql – Fact table definition
 
-dim_news_content.sql – Creates News dimension table
+dim_news_content.sql – Dimension table definition
 
-(Data is assumed to be successfully loaded into these tables.)
-
-Analytics and Visualization Layer
+Analytics and Visualization
 Streamlit Dashboard
 
-Located in dashboard/:
+The interactive dashboard is implemented using Streamlit and organized as follows:
 
 Home.py
-
-Platform overview
+Provides an overview of the platform
 
 pages/News.py
-
-Category composition
-
-Publishing trends
-
-Category distribution
+Displays news category distribution, publishing trends, and content analysis
 
 pages/YouTube.py
+Presents video performance metrics, engagement analysis, and trending insights
 
-Video performance metrics
+Visualization Features
 
-Engagement analysis
+The dashboard includes:
 
-Trending videos
+KPI indicators for key metrics
 
-Visualizations
+Bar charts for category comparisons
 
-KPI cards
+Line charts for trend analysis
 
-Bar charts
+Pie charts for distribution insights
 
-Line charts
+Time-series analysis for performance tracking
 
-Pie charts
+Security and Configuration
 
-Time-based trend analysis
+Sensitive credentials are managed securely:
 
-Credentials and Configuration
+Located in credentials/service_account.json
 
-Directory: credentials/
-
-service_account.json
-
-Used for secure BigQuery access
-
-Excluded from version control
+Excluded from version control using .gitignore
 
 Data Lifecycle Coverage
-Lifecycle Stage	Status
+Stage	Status
 Data Generation	Completed
 Data Ingestion	Completed
 Raw Data Storage	Completed
@@ -228,27 +221,33 @@ Data Warehousing	Completed
 Data Analysis	Completed
 Data Visualization	Completed
 Automation & Scheduling	Partial
-How to Run the Project
+Setup and Execution
+Prerequisites
+
+Ensure Python and virtual environment tools are installed.
+
+Installation
 # Activate virtual environment
 source venv/bin/activate        # Linux / macOS
-venv\Scripts\activate           # Windows
+venv\Scripts\activate          # Windows
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Run dashboard
+Run the Application
 streamlit run dashboard/Home.py
 Key Learnings
 
-Working with real-world APIs and datasets
+This project demonstrates:
 
-Data cleaning and transformation best practices
+Integration of real-world APIs and external datasets
 
-Domain-based data modeling
+Practical data cleaning and transformation workflows
 
-BigQuery analytical design
+Domain-driven data modeling techniques
 
-Building end-user analytics dashboards
+Cloud-based data warehousing using BigQuery
+
+Development of interactive analytics dashboards
 
 Project Status
 
@@ -256,4 +255,18 @@ Status: Completed
 
 Scope: End-to-end analytics pipeline
 
-Level: Industry-aligned analytics project
+Level: Industry-aligned data analytics project
+
+Future Enhancements
+
+Potential improvements include:
+
+Workflow orchestration using Airflow or similar tools
+
+Automated scheduling for data ingestion pipelines
+
+Incremental data loading strategies
+
+Advanced analytics and machine learning integration
+
+Deployment using containerization (Docker)
